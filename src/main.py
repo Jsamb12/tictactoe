@@ -1,3 +1,15 @@
+#  Winning indices for Tic-Tac-Toe
+WIN_LINES = [
+    (0, 1, 2), 
+    (3, 4, 5), 
+    (6, 7, 8), 
+    (0, 3, 6), 
+    (1, 4, 7), 
+    (2, 5, 8), 
+    (0, 4, 8), 
+    (2, 4, 6),
+]
+
 def new_board() -> list[str]:
     return [" "] * 9
 
@@ -38,18 +50,39 @@ def get_move(board: list[str], player: str) -> int:
             continue
 
         return idx
+    
+def get_winner(board: list[str]) -> str | None:
+    # A player ins if any one winning line has three identical symbols and is not empty
+    for a, b, c in WIN_LINES: 
+        if board[a] != " " and board[a] == board[b] == board[c]: # Prevents a false win, with line of " "
+            return board[a] # Return the winning symbol ("X" or "O")
+    return None
+
+def is_draw(board: list[str]) -> bool: 
+    return " " not in board and get_winner(board) is None
 
 def main() -> None: 
     print("Tic-Tac-Toe Game Started")
 
     board = new_board()
-    print_board(board)
+    current = "X"
 
-    idx = get_move(board, "X")
-    board[idx] = "X"
+    while True: 
+        print_board(board)
 
-    print()
-    print_board(board)
+        w = get_winner(board)
+        if w: 
+            print(f"Player {w} wins!")
+            break
+        if is_draw(board):
+            print("It's a draw!")
+            break
+
+        idx = get_move(board, current)
+        board[idx] = current
+
+        current = "O" if current == "X" else "X"
+        print()
 
 if __name__ == "__main__":
     main()
