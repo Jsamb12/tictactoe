@@ -14,7 +14,7 @@ def terminal_score(board: list[str]) -> int | None:
 
     w = get_winner(board)
 
-    if w == AI_player: 
+    if w == AI_PLAYER: 
         return 1
     if w == HUMAN_PLAYER:
         return -1
@@ -66,3 +66,15 @@ def best_ai_move(board: list[str]) -> int:
     moves = legal_moves(board)
 
     # Pick the move with the highest minimax score. 
+    best_score = -2
+    best_index = moves[0]
+
+    for i in moves: 
+        board[i] = AI_PLAYER                  # Try this move
+        score = minimax(board, HUMAN_PLAYER)  # Evaluate it
+        board[i] = " "                        # Undo move
+
+        if score > best_score: 
+            best_score = score
+            best_index = i 
+    return best_index

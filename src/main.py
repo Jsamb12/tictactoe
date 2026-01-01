@@ -1,6 +1,7 @@
 # main.py
 
 from game import new_board, get_winner, is_draw
+from ai import best_ai_move
 
 def print_board(board: list[str]) -> None: 
     def cell(i: int) -> str: 
@@ -57,7 +58,12 @@ def main() -> None:
             print("It's a draw!")
             break
 
-        idx = get_move(board, current)
+        if current == "X": 
+            idx = get_move(board, current)
+        else: 
+            idx = best_ai_move(board)
+            print(f"AI chooses cell {idx + 1}")
+
         board[idx] = current
 
         current = "O" if current == "X" else "X"
